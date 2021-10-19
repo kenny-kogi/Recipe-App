@@ -3,7 +3,6 @@ import '../model/recipe.dart';
 
 class RecipeDetail extends StatefulWidget {
   final Recipe recipe;
-
   const RecipeDetail({ Key? key, required this.recipe }) : super(key: key);
 
   @override
@@ -11,6 +10,9 @@ class RecipeDetail extends StatefulWidget {
 }
 
 class _RecipeDetailState extends State<RecipeDetail> {
+  // ignore: prefer_final_fields
+int _sliderVal = 1;
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -36,11 +38,24 @@ class _RecipeDetailState extends State<RecipeDetail> {
               padding: const EdgeInsets.all(17.0),
               itemCount: widget.recipe.ingredients.length,
               itemBuilder: (BuildContext context, int index){
-                // ignore: non_constant_identifier_names
                 final ingredient = widget.recipe.ingredients[index];
-                return Text('${ingredient.quantity} ${ingredient.measure} ${ingredient.name}');},
+                return Text('${ingredient.quantity * _sliderVal} ${ingredient.measure} ${ingredient.name}');},
               )
-              ),           
+              ),   
+              Slider(
+              min: 1,
+              max: 10,
+              divisions: 10,
+              label: '${_sliderVal * widget.recipe.servings} servings',
+              value: _sliderVal.toDouble(), 
+              onChanged: (newValue){
+                setState(() {
+                  _sliderVal = newValue.round();
+                });
+              }, 
+              activeColor: Colors.green,
+              inactiveColor: Colors.black,
+                )        
         ]
           ),
   )
